@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taxi Majes - Directorio Oficial Aplao</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#16a34a',
+                            600: '#15803d',
+                            700: '#15803d',
+                            800: '#166534',
+                        },
+                        majes: {
+                            sun: '#eab308',
+                            river: '#0284c7',
+                            valley: '#15803d',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-majes {
+            background: linear-gradient(135deg, #0284c7 0%, #15803d 50%, #eab308 100%);
+        }
+        .modal-blur {
+            backdrop-filter: blur(4px);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col selection:bg-brand-500 selection:text-white">
+
+    <!-- Header / Navbar -->
+    <header class="gradient-majes text-white shadow-lg sticky top-0 z-30">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('directory')">
+                <div class="w-10 h-10 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center text-yellow-300 text-xl font-bold border border-white/30 shadow-inner">
+                    <i class="fa-solid font-bold fa-taxi"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-xl tracking-tight leading-none text-white">TaxiMajes<span class="text-yellow-300">.pe</span></h1>
+                    <p class="text-xs text-emerald-100 font-medium">Aplao & Localidades - Valles de Majes</p>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex items-center space-x-2">
+                <button onclick="switchTab('directory')" id="nav-directory" class="px-3 py-1.5 rounded-lg text-sm font-semibold transition flex items-center space-x-1.5 bg-white/20 text-white border border-white/30 shadow-sm">
+                    <i class="fa-solid fa-list-ul"></i>
+                    <span class="hidden sm:inline">Directorio</span>
+                </button>
+                <button onclick="switchTab('register')" id="nav-register" class="px-3 py-1.5 rounded-lg text-sm font-semibold transition flex items-center space-x-1.5 bg-yellow-400 text-slate-900 hover:bg-yellow-300 shadow-md">
+                    <i class="fa-solid fa-id-card"></i>
+                    <span class="hidden sm:inline">Soy Taxista</span>
+                </button>
+                <button onclick="switchTab('admin')" id="nav-admin" class="px-3 py-1.5 rounded-lg text-sm font-semibold transition flex items-center space-x-1.5 bg-slate-900/40 hover:bg-slate-900/60 text-white border border-white/20">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <span class="hidden md:inline">Administración</span>
+                    <span id="badge-pending" class="hidden ml-1 px-1.5 py-0.5 text-xs bg-red-500 text-white rounded-full font-bold">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner (Shows on Directory Tab) -->
+    <div id="hero-banner" class="bg-gradient-to-r from-emerald-800 via-teal-800 to-sky-800 text-white py-8 px-4 border-b border-emerald-900 relative overflow-hidden">
+        <div class="absolute right-0 top-0 opacity-10 translate-x-10 -translate-y-10 pointer-events-none">
+            <i class="fa-solid fa-taxi text-9xl"></i>
+        </div>
+        <div class="max-w-6xl mx-auto relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="space-y-2 text-center md:text-left">
+                <span class="inline-block px-3 py-1 bg-yellow-400/20 text-yellow-300 border border-yellow-400/30 rounded-full text-xs font-semibold tracking-wide uppercase">
+                    <i class="fa-solid fa-location-dot mr-1"></i> Servicio Urbano & Rural en Aplao
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Taxis Seguros y Verificados en el Valle</h2>
+                <p class="text-emerald-100 text-sm max-w-xl">
+                    Conéctate directamente por WhatsApp o llamada con conductores formales para tramos cortos dentro de Aplao, Alto La Barranca, Caspani, Huancarqui y anexos.
+                </p>
+            </div>
+            <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4 text-center min-w-[240px]">
+                <p class="text-xs text-emerald-200 uppercase font-bold tracking-wider mb-1">Garantía de Seguridad</p>
+                <div class="flex items-center justify-center space-x-2 text-yellow-300 font-bold text-lg">
+                    <i class="fa-solid fa-shield-halved text-2xl"></i>
+                    <span>Conductores con DNI y Brevete Validado</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-6">
+
+        <!-- TAB 1: DIRECTORY (PUBLIC VIEW) -->
+        <section id="tab-directory" class="space-y-6">
+            <!-- Search & Filters Bar -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    <!-- Search Input -->
+                    <div class="relative lg:col-span-2">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400"></i>
+                        <input type="text" id="search-input" placeholder="Buscar por conductor, placa o modelo..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition">
+                    </div>
+                    <!-- Zone Filter -->
+                    <div>
+                        <select id="filter-zone" class="w-full py-2.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition text-slate-700">
+                            <option value="all">📍 Todas las zonas de Aplao</option>
+                            <option value="Aplao Centro">Aplao Centro / Plaza de Armas</option>
+                            <option value="Alto La Barranca">Alto La Barranca</option>
+                            <option value="Caspani">Caspani / Chamba</option>
+                            <option value="Huancarqui">Huancarqui (Cruce/Puente)</option>
+                            <option value="La Real">La Real / Anexos</option>
+                        </select>
+                    </div>
+                    <!-- Status Filter -->
+                    <div>
+                        <select id="filter-status" class="w-full py-2.5 px-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition text-slate-700">
+                            <option value="all">🟢 Todos los estados</option>
+                            <option value="Disponible">Solo Disponibles Ahora</option>
+                            <option value="En servicio">En servicio</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Directory Grid -->
+            <div id="drivers-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Dynamic Driver Cards will be rendered here -->
+            </div>
+
+            <!-- Empty Search Results -->
+            <div id="empty-results" class="hidden text-center py-12 bg-white rounded-2xl border border-dashed border-slate-300">
+                <div class="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">
+                    <i class="fa-solid fa-car-tunnel"></i>
+                </div>
+                <h3 class="font-bold text-slate-700 text-lg">No se encontraron taxistas</h3>
+                <p class="text-slate-500 text-sm max-w-sm mx-auto mt-1">Prueba ajustando tus términos de búsqueda o seleccionando otra zona de Aplao.</p>
+            </div>
+        </section>
+
+
+        <!-- TAB 2: REGISTER FORM FOR DRIVERS -->
+        <section id="tab-register" class="hidden max-w-2xl mx-auto">
+            <div class="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden">
+                <!-- Form Header -->
+                <div class="bg-gradient-to-r from-emerald-700 to-teal-800 text-white p-6">
+                    <div class="flex items-center space-x-3">
+                        <div class="p-3 bg-white/20 rounded-xl">
+                            <i class="fa-solid fa-address-card text-2xl text-yellow-300"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold">Registro para Taxistas de Aplao</h2>
+                            <p class="text-xs text-emerald-100 mt-0.5">Únete al directorio formal del Valle de Majes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Anti-Spam / Verification Notice -->
+                <div class="p-4 bg-amber-50 border-b border-amber-200 text-amber-900 text-xs flex items-start space-x-3">
+                    <i class="fa-solid fa-shield-cat text-amber-600 text-lg flex-shrink-0 mt-0.5"></i>
+                    <div>
+                        <span class="font-bold block text-amber-950">Medida Anti-Bromas y Seguridad (Opción D):</span>
+                        Para garantizar la seguridad de los usuarios y evitar registros falsos, es obligatorio adjuntar foto de tu Brevete/DNI y de tu vehículo con placa. Toda solicitud es revisada por el administrador antes de su publicación.
+                    </div>
+                </div>
+
+                <!-- Registration Form -->
+                <form id="driver-form" onsubmit="handleRegistration(event)" class="p-6 space-y-5">
+                    <!-- Personal Info -->
+                    <div class="space-y-4">
+                        <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider border-b pb-1 flex items-center justify-between">
+                            <span>1. Datos Personales</span>
+                            <i class="fa-solid fa-user text-slate-400"></i>
+                        </h3>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Nombres y Apellidos *</label>
+                                <input type="text" id="reg-name" required placeholder="Ej. Carlos Mendoza Torres" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">DNI / Licencia de Conducir *</label>
+                                <input type="text" id="reg-dni" required maxlength="12" placeholder="Ej. 45892011 / A-IIa" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Número de WhatsApp (Perú) *</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-2 text-sm text-slate-500 font-medium">+51</span>
+                                <input type="tel" id="reg-phone" required pattern="[9][0-9]{8}" placeholder="987654321" class="w-full pl-12 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            </div>
+                            <p class="text-[11px] text-slate-500 mt-1">Ingresa los 9 dígitos de tu celular. Este será el número donde recibirás viajes por WhatsApp.</p>
+                        </div>
+                    </div>
+
+                    <!-- Vehicle Info -->
+                    <div class="space-y-4 pt-2">
+                        <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider border-b pb-1 flex items-center justify-between">
+                            <span>2. Datos del Vehículo</span>
+                            <i class="fa-solid fa-car text-slate-400"></i>
+                        </h3>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Marca y Modelo *</label>
+                                <input type="text" id="reg-car-model" required placeholder="Ej. Toyota Yaris" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Color *</label>
+                                <input type="text" id="reg-car-color" required placeholder="Ej. Plata / Blanco" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Número de Placa *</label>
+                                <input type="text" id="reg-car-plate" required placeholder="Ej. V4A-123" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 uppercase">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Zona / Paradero Principal en Aplao *</label>
+                            <select id="reg-zone" required class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                <option value="Aplao Centro">Aplao Centro (Plaza / Mercado / Hospital)</option>
+                                <option value="Alto La Barranca">Alto La Barranca</option>
+                                <option value="Caspani">Caspani / Chamba</option>
+                                <option value="Huancarqui">Huancarqui / Puente Majes</option>
+                                <option value="La Real">La Real / Anexos Cercanos</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Mandatory Document Verification (Option D) -->
+                    <div class="space-y-4 pt-2">
+                        <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider border-b pb-1 flex items-center justify-between">
+                            <span>3. Validación de Documentos (Obligatorio)</span>
+                            <i class="fa-solid fa-file-shield text-slate-400"></i>
+                        </h3>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Photo 1: Brevete / DNI -->
+                            <div class="border-2 border-dashed border-slate-300 rounded-xl p-4 text-center hover:bg-slate-50 transition relative">
+                                <i class="fa-solid fa-id-badge text-3xl text-emerald-600 mb-2"></i>
+                                <span class="block text-xs font-bold text-slate-700">Foto de Brevete o DNI</span>
+                                <span class="block text-[11px] text-slate-500 mb-3">Legible cara frontal</span>
+                                <input type="file" id="file-brevete" accept="image/*" required onchange="previewUpload(event, 'preview-brevete')" class="hidden">
+                                <label for="file-brevete" class="inline-block px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-lg text-xs font-semibold cursor-pointer transition">
+                                    <i class="fa-solid fa-upload mr-1"></i> Seleccionar foto
+                                </label>
+                                <div id="preview-brevete" class="mt-2 hidden">
+                                    <span class="inline-flex items-center text-xs text-emerald-700 font-semibold bg-emerald-100 px-2.5 py-1 rounded-md">
+                                        <i class="fa-solid fa-circle-check mr-1"></i> Archivo cargado
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Photo 2: Vehicle & Plate -->
+                            <div class="border-2 border-dashed border-slate-300 rounded-xl p-4 text-center hover:bg-slate-50 transition relative">
+                                <i class="fa-solid fa-car-side text-3xl text-emerald-600 mb-2"></i>
+                                <span class="block text-xs font-bold text-slate-700">Foto del Auto con Placa</span>
+                                <span class="block text-[11px] text-slate-500 mb-3">Donde se aprecie la placa</span>
+                                <input type="file" id="file-vehicle" accept="image/*" required onchange="previewUpload(event, 'preview-vehicle')" class="hidden">
+                                <label for="file-vehicle" class="inline-block px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-lg text-xs font-semibold cursor-pointer transition">
+                                    <i class="fa-solid fa-upload mr-1"></i> Seleccionar foto
+                                </label>
+                                <div id="preview-vehicle" class="mt-2 hidden">
+                                    <span class="inline-flex items-center text-xs text-emerald-700 font-semibold bg-emerald-100 px-2.5 py-1 rounded-md">
+                                        <i class="fa-solid fa-circle-check mr-1"></i> Archivo cargado
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="pt-4">
+                        <button type="submit" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>Enviar Solicitud de Registro</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+
+        <!-- TAB 3: ADMIN PANEL (FOR REVIEWING SUBMISSIONS) -->
+        <section id="tab-admin" class="hidden space-y-6">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-800 flex items-center space-x-2">
+                        <i class="fa-solid fa-user-shield text-emerald-600"></i>
+                        <span>Panel de Revisión e Inspección de Taxistas</span>
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Aprueba o rechaza solicitudes verificando la foto de brevete y vehículo para prevenir perfiles falsos.</p>
+                </div>
+                <div class="inline-flex items-center px-3 py-1.5 bg-slate-100 rounded-lg text-xs font-medium text-slate-600">
+                    <span id="pending-count-label" class="font-bold text-emerald-600 mr-1">0</span> solicitudes pendientes
+                </div>
+            </div>
+
+            <!-- List of Pending Submissions -->
+            <div id="pending-requests-list" class="space-y-4">
+                <!-- Pending cards will render dynamically here -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-8 px-4 border-t border-slate-800 mt-auto">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-center md:text-left">
+            <div>
+                <p class="font-bold text-slate-200 text-sm">TaxiMajes - Directorio Local de Aplao</p>
+                <p class="mt-0.5">Servicio exclusivo para desplazamientos locales urbanos y rurales cortos en el Valle de Majes, Arequipa.</p>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-slate-500"><i class="fa-solid fa-location-dot text-emerald-500"></i> Aplao - Huancarqui - Corire</span>
+                <span>•</span>
+                <span class="text-yellow-400 font-semibold"><i class="fa-solid fa-shield-check"></i> Registro Verificado</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Modal for Notifications / Approvals -->
+    <div id="custom-modal" class="fixed inset-0 bg-slate-900/60 modal-blur z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl border border-slate-100 space-y-4">
+            <div id="modal-icon" class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div>
+                <h3 id="modal-title" class="font-bold text-slate-800 text-lg">¡Solicitud Enviada!</h3>
+                <p id="modal-message" class="text-slate-600 text-xs mt-1 leading-relaxed">
+                    Tus datos y documentos han sido registrados. El administrador del directorio en Aplao revisará tu brevete y foto para activar tu perfil.
+                </p>
+            </div>
+            <button onclick="closeModal()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition">
+                Entendido
+            </button>
+        </div>
+    </div>
+
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Array de taxistas aprobados (Inicia completamente VACÍO por solicitud explícita)
+        let approvedDrivers = JSON.parse(localStorage.getItem('approvedDrivers')) || [];
+
+        // Array de solicitudes pendientes de revisión en el panel de administración
+        let pendingDrivers = JSON.parse(localStorage.getItem('pendingDrivers')) || [];
+
+        // Save state to LocalStorage
+        function saveData() {
+            localStorage.setItem('approvedDrivers', JSON.stringify(approvedDrivers));
+            localStorage.setItem('pendingDrivers', JSON.stringify(pendingDrivers));
+        }
+
+        // Initialize App on DOM Load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderDirectory();
+            updatePendingBadge();
+
+            // Search and filter listeners
+            document.getElementById('search-input').addEventListener('input', renderDirectory);
+            document.getElementById('filter-zone').addEventListener('change', renderDirectory);
+            document.getElementById('filter-status').addEventListener('change', renderDirectory);
+        });
+
+        // Tab Navigation Switcher
+        function switchTab(tab) {
+            const tabs = ['directory', 'register', 'admin'];
+            tabs.forEach(t => {
+                const el = document.getElementById(`tab-${t}`);
+                const btn = document.getElementById(`nav-${t}`);
+                if (t === tab) {
+                    el.classList.remove('hidden');
+                    if (t === 'register') {
+                        btn.className = "px-3 py-1.5 rounded-lg text-sm font-semibold transition flex items-center space-x-1.5 bg-yellow-400 text-slate-900 shadow-md";
+                    } else {
+                        btn.className = "px-3 py-1.5 rounded-lg text-sm font-semibold transition flex items-center space-x-1.5 bg-white/20 text-white border border-white/30 shadow-sm";
+                    }
+                } else {
+                    el.classList.add('hidden');
+                    btn.className = "px-3 py-1.5 rounded-lg text-sm font-semibold transition flex items-center space-x-1.5 bg-transparent text-white/80 hover:bg-white/10";
+                }
+            });
+
+            // Toggle Banner Visibility
+            const banner = document.getElementById('hero-banner');
+            if (tab === 'directory') {
+                banner.classList.remove('hidden');
+            } else {
+                banner.classList.add('hidden');
+            }
+
+            if (tab === 'admin') {
+                renderAdminPanel();
+            }
+        }
+
+        // Render Directory Cards
+        function renderDirectory() {
+            const grid = document.getElementById('drivers-grid');
+            const empty = document.getElementById('empty-results');
+            const search = document.getElementById('search-input').value.toLowerCase();
+            const zoneFilter = document.getElementById('filter-zone').value;
+            const statusFilter = document.getElementById('filter-status').value;
+
+            grid.innerHTML = '';
+
+            const filtered = approvedDrivers.filter(driver => {
+                const matchesSearch = driver.name.toLowerCase().includes(search) ||
+                                      driver.plate.toLowerCase().includes(search) ||
+                                      driver.carModel.toLowerCase().includes(search);
+                const matchesZone = zoneFilter === 'all' || driver.zone === zoneFilter;
+                const matchesStatus = statusFilter === 'all' || driver.status === statusFilter;
+
+                return matchesSearch && matchesZone && matchesStatus;
+            });
+
+            if (filtered.length === 0) {
+                empty.classList.remove('hidden');
+                if (approvedDrivers.length === 0) {
+                    empty.innerHTML = `
+                        <div class="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">
+                            <i class="fa-solid fa-taxi"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-700 text-lg">Aún no hay taxistas registrados en Aplao</h3>
+                        <p class="text-slate-500 text-sm max-w-sm mx-auto mt-1 mb-4">El directorio está listo. Los taxistas deben completar su registro con documentos para aparecer en esta lista.</p>
+                        <button onclick="switchTab('register')" class="px-4 py-2 bg-yellow-400 hover:bg-yellow-300 text-slate-900 font-bold text-xs rounded-xl shadow-md transition inline-flex items-center space-x-2">
+                            <i class="fa-solid fa-id-card"></i>
+                            <span>Registrarme como Taxista</span>
+                        </button>
+                    `;
+                } else {
+                    empty.innerHTML = `
+                        <div class="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-700 text-lg">No se encontraron coincidencias</h3>
+                        <p class="text-slate-500 text-sm max-w-sm mx-auto mt-1">Prueba ajustando los filtros o buscando otro término.</p>
+                    `;
+                }
+                return;
+            } else {
+                empty.classList.add('hidden');
+            }
+
+            filtered.forEach(driver => {
+                const statusBg = driver.status === 'Disponible' 
+                    ? 'bg-emerald-100 text-emerald-800 border-emerald-300' 
+                    : 'bg-amber-100 text-amber-800 border-amber-300';
+
+                const statusDot = driver.status === 'Disponible' ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500';
+
+                const waMessage = encodeURIComponent(`Hola ${driver.name}, te contacto desde la web TaxiMajes. Necesito un servicio de taxi local en Aplao...`);
+                const waUrl = `https://wa.me/51${driver.phone}?text=${waMessage}`;
+
+                const cardHtml = `
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition overflow-hidden flex flex-col justify-between">
+                        <div class="p-5">
+                            <div class="flex items-start justify-between gap-3">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-14 h-14 rounded-full bg-emerald-100 border-2 border-emerald-500 shadow-sm flex items-center justify-center text-emerald-700 text-xl font-bold">
+                                        <i class="fa-solid fa-user-check"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-slate-800 text-base leading-tight flex items-center gap-1.5">
+                                            <span>${driver.name}</span>
+                                            <i class="fa-solid fa-circle-check text-sky-500 text-sm" title="Taxista Verificado con Brevete"></i>
+                                        </h3>
+                                        <p class="text-xs text-slate-500 font-medium flex items-center mt-0.5">
+                                            <i class="fa-solid fa-location-dot text-emerald-600 mr-1"></i> ${driver.zone}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 p-3 bg-slate-50 rounded-xl border border-slate-100 grid grid-cols-2 gap-2 text-xs">
+                                <div>
+                                    <span class="text-slate-400 block font-medium">Vehículo</span>
+                                    <span class="font-bold text-slate-700">${driver.carModel}</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block font-medium">Placa y Color</span>
+                                    <span class="font-bold text-slate-700">${driver.plate} (${driver.carColor})</span>
+                                </div>
+                            </div>
+
+                            <div class="mt-3 flex items-center justify-between text-xs">
+                                <span class="px-2.5 py-1 rounded-full text-[11px] font-bold border flex items-center gap-1.5 ${statusBg}">
+                                    <span class="w-2 h-2 rounded-full ${statusDot}"></span>
+                                    ${driver.status}
+                                </span>
+                                <span class="text-slate-400 font-medium">
+                                    <i class="fa-solid fa-shield-halved text-emerald-600"></i> Documentos Verificados
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-slate-50 border-t border-slate-100 grid grid-cols-2 gap-2">
+                            <a href="${waUrl}" target="_blank" class="py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center justify-center space-x-1.5 shadow transition">
+                                <i class="fa-brands fa-whatsapp text-sm"></i>
+                                <span>Pedir Taxi</span>
+                            </a>
+                            <a href="tel:+51${driver.phone}" class="py-2.5 px-3 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-bold flex items-center justify-center space-x-1.5 shadow transition">
+                                <i class="fa-solid fa-phone text-xs"></i>
+                                <span>Llamar</span>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += cardHtml;
+            });
+        }
+
+        // Preview mock upload
+        function previewUpload(event, previewId) {
+            const previewEl = document.getElementById(previewId);
+            if (event.target.files && event.target.files[0]) {
+                previewEl.classList.remove('hidden');
+            }
+        }
+
+        // Handle Registration Form Submit
+        function handleRegistration(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('reg-name').value;
+            const phone = document.getElementById('reg-phone').value;
+            const dni = document.getElementById('reg-dni').value;
+            const carModel = document.getElementById('reg-car-model').value;
+            const carColor = document.getElementById('reg-car-color').value;
+            const plate = document.getElementById('reg-car-plate').value.toUpperCase();
+            const zone = document.getElementById('reg-zone').value;
+
+            // Create new pending request
+            const newReq = {
+                id: 'req-' + Date.now(),
+                name,
+                phone,
+                dni,
+                carModel,
+                carColor,
+                plate,
+                zone,
+                breveteDoc: 'adjunto_brevete.jpg',
+                vehicleDoc: 'adjunto_vehiculo.jpg',
+                submittedAt: 'Reciente'
+            };
+
+            pendingDrivers.push(newReq);
+            saveData();
+            updatePendingBadge();
+
+            // Reset form
+            document.getElementById('driver-form').reset();
+            document.getElementById('preview-brevete').classList.add('hidden');
+            document.getElementById('preview-vehicle').classList.add('hidden');
+
+            // Show Confirmation Modal
+            openModal(
+                '¡Solicitud Registrada!',
+                `Gracias ${name}. Tu solicitud ha sido enviada. El administrador revisará tu brevete y fotos antes de activar tu perfil en el catálogo de Aplao.`
+            );
+
+            switchTab('directory');
+        }
+
+        // Render Admin Panel
+        function renderAdminPanel() {
+            const list = document.getElementById('pending-requests-list');
+            const countLabel = document.getElementById('pending-count-label');
+            countLabel.textContent = pendingDrivers.length;
+
+            list.innerHTML = '';
+
+            if (pendingDrivers.length === 0) {
+                list.innerHTML = `
+                    <div class="p-8 text-center bg-white rounded-2xl border border-slate-200 text-slate-500">
+                        <i class="fa-solid fa-clipboard-check text-4xl text-emerald-500 mb-2"></i>
+                        <p class="font-bold text-slate-700">No hay solicitudes pendientes</p>
+                        <p class="text-xs text-slate-400 mt-0.5">Todas las postulaciones enviadas por los taxistas han sido procesadas.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            pendingDrivers.forEach((req, index) => {
+                const reqCard = `
+                    <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b pb-3">
+                            <div>
+                                <span class="px-2 py-0.5 bg-amber-100 text-amber-800 text-[11px] font-bold rounded-md">Revisión Pendiente</span>
+                                <h3 class="font-bold text-slate-800 text-base mt-1">${req.name}</h3>
+                                <p class="text-xs text-slate-500">DNI / Licencia: ${req.dni} • WhatsApp: +51 ${req.phone}</p>
+                            </div>
+                            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock"></i> ${req.submittedAt}</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs bg-slate-50 p-3 rounded-xl">
+                            <div>
+                                <span class="text-slate-400 block">Vehículo</span>
+                                <span class="font-bold text-slate-700">${req.carModel}</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-400 block">Placa</span>
+                                <span class="font-bold text-slate-700">${req.plate}</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-400 block">Color</span>
+                                <span class="font-bold text-slate-700">${req.carColor}</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-400 block">Zona Principal</span>
+                                <span class="font-bold text-slate-700">${req.zone}</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <span class="text-xs font-bold text-slate-700 block mb-2">Documentos Adjuntos para Verificación (Opción D):</span>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="bg-slate-100 p-3 rounded-xl text-center border border-slate-200">
+                                    <i class="fa-solid fa-id-card text-emerald-600 text-2xl mb-1"></i>
+                                    <span class="block text-[11px] font-semibold text-slate-700">Foto Brevete / DNI</span>
+                                    <span class="text-[10px] text-emerald-600 font-bold"><i class="fa-solid fa-check"></i> Foto adjunta</span>
+                                </div>
+                                <div class="bg-slate-100 p-3 rounded-xl text-center border border-slate-200">
+                                    <i class="fa-solid fa-car text-emerald-600 text-2xl mb-1"></i>
+                                    <span class="block text-[11px] font-semibold text-slate-700">Foto Auto y Placa</span>
+                                    <span class="text-[10px] text-emerald-600 font-bold"><i class="fa-solid fa-check"></i> Foto adjunta</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-end space-x-3 pt-2">
+                            <button onclick="rejectDriver(${index})" class="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 font-bold rounded-xl text-xs transition">
+                                <i class="fa-solid fa-xmark mr-1"></i> Rechazar
+                            </button>
+                            <button onclick="approveDriver(${index})" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow transition">
+                                <i class="fa-solid fa-check mr-1"></i> Aprobar y Publicar
+                            </button>
+                        </div>
+                    </div>
+                `;
+                list.innerHTML += reqCard;
+            });
+        }
+
+        // Approve Driver Action
+        function approveDriver(index) {
+            const req = pendingDrivers[index];
+            const newDriver = {
+                id: 'drv-' + Date.now(),
+                name: req.name,
+                phone: req.phone,
+                dni: req.dni,
+                carModel: req.carModel,
+                carColor: req.carColor,
+                plate: req.plate,
+                zone: req.zone,
+                status: 'Disponible',
+                verified: true
+            };
+
+            approvedDrivers.unshift(newDriver);
+            pendingDrivers.splice(index, 1);
+
+            saveData();
+            updatePendingBadge();
+            renderAdminPanel();
+            renderDirectory();
+
+            openModal('¡Taxista Aprobado!', `El perfil de ${req.name} ha sido activado y ahora ya aparece visible en el directorio público de Aplao.`);
+        }
+
+        // Reject Driver Action
+        function rejectDriver(index) {
+            const req = pendingDrivers[index];
+            pendingDrivers.splice(index, 1);
+            saveData();
+            updatePendingBadge();
+            renderAdminPanel();
+            openModal('Solicitud Rechazada', `La solicitud de ${req.name} ha sido descartada.`);
+        }
+
+        function updatePendingBadge() {
+            const badge = document.getElementById('badge-pending');
+            if (pendingDrivers.length > 0) {
+                badge.textContent = pendingDrivers.length;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        // Modal Controls
+        function openModal(title, message) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-message').textContent = message;
+            document.getElementById('custom-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('custom-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
